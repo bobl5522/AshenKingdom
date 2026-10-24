@@ -1,28 +1,45 @@
 extends CharacterBody3D
 
+const PLAYER_CAMERA_SCRIPT = preload("res://player_camera.gd")
+
+# Movement tuning
 const WALK_SPEED: float = 4.0
 const SPRINT_SPEED: float = 7.0
 const JUMP_VELOCITY: float = 4.5
 const GRAVITY: float = 12.0
-const MOUSE_SENSITIVITY: float = 0.0025
+const ACCELERATION: float = 18.0
+const DECELERATION: float = 22.0
 
-var pitch: float = -0.12
-var camera_pivot: Node3D
 var debug_label: Label
+var jump_requested: bool = false
 
 
 func _ready() -> void:
     name = "Player"
+    _create_collision()
+    _create_visuals()
+    _create_camera_controller()
+    _create_debug_ui()
+    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+
+func _create_collision() -> void:
     var collision := CollisionShape3D.new()
+    collision.name = "PlayerCollision"
+
     var capsule := CapsuleShape3D.new()
     capsule.radius = 0.4
     capsule.height = 1.8
+
     collision.shape = capsule
     collision.position.y = 0.9
     add_child(collision)
 
+
+func _create_visuals() -> void:
     var body := MeshInstance3D.new()
+    body.name = "BodyMesh"
+
     var body_mesh := CapsuleMesh.new()
     body_mesh.radius = 0.4
     body_mesh.height = 1.8
@@ -32,6 +49,8 @@ func _ready() -> void:
     add_child(body)
 
     var head := MeshInstance3D.new()
+    head.name = "HeadMesh"
+
     var head_mesh := SphereMesh.new()
     head_mesh.radius = 0.24
     head_mesh.height = 0.48
@@ -40,94 +59,136 @@ func _ready() -> void:
     head.material_override = _make_material(Color(0.55, 0.42, 0.32))
     add_child(head)
 
-    camera_pivot = Node3D.new()
-    camera_pivot.position.y = 1.5
-    add_child(camera_pivot)
-
-    var camera := Camera3D.new()
-    camera.position = Vector3(0.0, 0.5, 4.5)
-    camera.rotation.x = pitch
-    camera.fov = 75.0
-    camera.current = true
-    camera_pivot.add_child(camera)
-
-    var ui := CanvasLayer.new()
-    add_child(ui)
-
-    debug_label = Label.new()
-    debug_label.position = Vector2(16, 16)
-    debug_label.add_theme_font_size_override("font_size", 18)
-    debug_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.55))
-    ui.add_child(debug_label)
-
-    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 
 func _make_material(color: Color) -> StandardMaterial3D:
     var material := StandardMaterial3D.new()
     material.albedo_color = color
+    material.roughness = 0.85
     return material
 
 
-func _unhandled_input(event: InputEvent) -> void:
-    if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-        rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-        pitch = clampf(pitch - event.relative.y * MOUSE_SENSITIVITY, -0.8, 0.45)
-        camera_pivot.rotation.x = pitch
+func _create_camera_controller() -> void:
+    var camera_controller := Node3D.new()
+    camera_controller.name = "CameraController"
+    camera_controller.set_script(PLAYER_CAMERA_SCRIPT)
+    add_child(camera_controller)
 
-    if event is InputEventKey and event.pressed and not event.echo:
-        if event.keycode == KEY_ESCAPE:
-            if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-                Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-            else:
-                Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _create_debug_ui() -> void:
+    var ui := CanvasLayer.new()
+    ui.name = "DebugLayer"
+    add_child(ui)
+
+    debug_label = Label.new()
+    debug_label.name = "DebugLabel"
+    debug_label.position = Vector2(16.0, 16.0)
+    debug_label.add_theme_font_size_override("font_size", 16)
+    debug_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.55))
+    ui.add_child(debug_label)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+    if not event is InputEventKey:
+        return
+
+    if not event.pressed or event.echo:
+        return
+
+    if event.physical_keycode == KEY_SPACE:
+        jump_requested = true
+
+    if event.keycode == KEY_ESCAPE:
+        if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+            Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+        else:
+            Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _physics_process(delta: float) -> void:
-    var forward := Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
-    var backward := Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)
-    var left := Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)
-    var right := Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
-    var sprinting := Input.is_physical_key_pressed(KEY_SHIFT)
+    _apply_gravity(delta)
+    _handle_jump()
+    _handle_horizontal_movement(delta)
+    move_and_slide()
+    _update_debug_ui()
 
-    var x_input := float(right) - float(left)
-    var z_input := float(backward) - float(forward)
-    var input_dir := Vector2(x_input, z_input).normalized()
 
+func _apply_gravity(delta: float) -> void:
     if not is_on_floor():
         velocity.y -= GRAVITY * delta
+    elif velocity.y < 0.0:
+        velocity.y = 0.0
 
-    if Input.is_physical_key_pressed(KEY_SPACE) and is_on_floor():
+
+func _handle_jump() -> void:
+    if jump_requested and is_on_floor():
         velocity.y = JUMP_VELOCITY
 
-    var direction := (transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized()
-    var speed := SPRINT_SPEED if sprinting else WALK_SPEED
+    jump_requested = false
 
-    if direction.length_squared() > 0.0:
-        velocity.x = direction.x * speed
-        velocity.z = direction.z * speed
-    else:
-        velocity.x = move_toward(velocity.x, 0.0, WALK_SPEED * 2.0)
-        velocity.z = move_toward(velocity.z, 0.0, WALK_SPEED * 2.0)
 
-    move_and_slide()
+func _handle_horizontal_movement(delta: float) -> void:
+    var forward := (
+        Input.is_physical_key_pressed(KEY_W)
+        or Input.is_physical_key_pressed(KEY_UP)
+    )
+    var backward := (
+        Input.is_physical_key_pressed(KEY_S)
+        or Input.is_physical_key_pressed(KEY_DOWN)
+    )
+    var left := (
+        Input.is_physical_key_pressed(KEY_A)
+        or Input.is_physical_key_pressed(KEY_LEFT)
+    )
+    var right := (
+        Input.is_physical_key_pressed(KEY_D)
+        or Input.is_physical_key_pressed(KEY_RIGHT)
+    )
+    var sprinting := Input.is_physical_key_pressed(KEY_SHIFT)
 
-    if is_instance_valid(debug_label):
-        var keys := ""
-        if forward:
-            keys += " W"
-        if backward:
-            keys += " S"
-        if left:
-            keys += " A"
-        if right:
-            keys += " D"
-        if sprinting:
-            keys += " Shift"
-        if Input.is_physical_key_pressed(KEY_SPACE):
-            keys += " Space"
-        if keys.is_empty():
-            keys = " — нет"
+    var input_vector := Vector2(
+        float(right) - float(left),
+        float(backward) - float(forward)
+    ).normalized()
 
-        var horizontal_speed := Vector2(velocity.x, velocity.z).length()
-        debug_label.text = "ASHEN KINGDOM — ДИАГНОСТИКА\nWASD / стрелки: ходьба | Shift: бег | Space: прыжок | Esc: мышь\nНажатые клавиши:" + keys + "\nСкорость: %.2f" % horizontal_speed + " | На земле: " + str(is_on_floor()) + "\nПозиция: %.2f, %.2f, %.2f" % [global_position.x, global_position.y, global_position.z]
+    var move_direction := (
+        transform.basis * Vector3(input_vector.x, 0.0, input_vector.y)
+    ).normalized()
+
+    var target_speed := SPRINT_SPEED if sprinting else WALK_SPEED
+    var acceleration := (
+        ACCELERATION
+        if input_vector.length_squared() > 0.0
+        else DECELERATION
+    )
+
+    var target_x := move_direction.x * target_speed
+    var target_z := move_direction.z * target_speed
+
+    velocity.x = move_toward(velocity.x, target_x, acceleration * delta)
+    velocity.z = move_toward(velocity.z, target_z, acceleration * delta)
+
+
+func _update_debug_ui() -> void:
+    if not is_instance_valid(debug_label):
+        return
+
+    var horizontal_speed := Vector2(velocity.x, velocity.z).length()
+    var mouse_state := (
+        "Captured"
+        if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+        else "Visible"
+    )
+
+    debug_label.text = (
+        "ASHEN KINGDOM | CONTROLLER DEBUG\n"
+        + "WASD / Arrows: Move | Shift: Sprint | Space: Jump\n"
+        + "Esc: Toggle Mouse Capture\n"
+        + "Horizontal speed: %.2f\n" % horizontal_speed
+        + "Grounded: %s\n" % str(is_on_floor())
+        + "Mouse: %s\n" % mouse_state
+        + "Position: %.2f, %.2f, %.2f" % [
+            global_position.x,
+            global_position.y,
+            global_position.z
+        ]
+    )
