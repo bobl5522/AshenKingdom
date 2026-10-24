@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://player.gd" id="1_player"]
+[ext_resource type="PackedScene" path="res://player.tscn" id="1_player_scene"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
 size = Vector2(100, 100)
@@ -22,9 +22,8 @@ material_override = SubResource("StandardMaterial3D_ground")
 [node name="GroundCollision" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="Player" parent="." instance=ExtResource("1_player_scene")]
 position = Vector3(0, 1.0, 0)
-script = ExtResource("1_player")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-48, -35, 0)
