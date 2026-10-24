@@ -88,16 +88,10 @@ func _create_debug_ui() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-    if not event is InputEventKey:
-        return
-
-    if not event.pressed or event.echo:
-        return
-
-    if event.physical_keycode == KEY_SPACE:
+    if event.is_action_pressed("jump", false):
         jump_requested = true
 
-    if event.keycode == KEY_ESCAPE:
+    if event.is_action_pressed("toggle_mouse_capture", false):
         if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
             Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
         else:
@@ -127,28 +121,13 @@ func _handle_jump() -> void:
 
 
 func _handle_horizontal_movement(delta: float) -> void:
-    var forward := (
-        Input.is_physical_key_pressed(KEY_W)
-        or Input.is_physical_key_pressed(KEY_UP)
+    var input_vector := Input.get_vector(
+        "move_left",
+        "move_right",
+        "move_forward",
+        "move_backward"
     )
-    var backward := (
-        Input.is_physical_key_pressed(KEY_S)
-        or Input.is_physical_key_pressed(KEY_DOWN)
-    )
-    var left := (
-        Input.is_physical_key_pressed(KEY_A)
-        or Input.is_physical_key_pressed(KEY_LEFT)
-    )
-    var right := (
-        Input.is_physical_key_pressed(KEY_D)
-        or Input.is_physical_key_pressed(KEY_RIGHT)
-    )
-    var sprinting := Input.is_physical_key_pressed(KEY_SHIFT)
-
-    var input_vector := Vector2(
-        float(right) - float(left),
-        float(backward) - float(forward)
-    ).normalized()
+    var sprinting := Input.is_action_pressed("sprint")
 
     var move_direction := (
         transform.basis * Vector3(input_vector.x, 0.0, input_vector.y)
