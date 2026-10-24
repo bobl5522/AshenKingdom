@@ -3,12 +3,8 @@ extends CharacterBody3D
 const PLAYER_CAMERA_SCRIPT = preload("res://player_camera.gd")
 
 # Movement tuning
-const WALK_SPEED: float = 4.0
-const SPRINT_SPEED: float = 7.0
-const JUMP_VELOCITY: float = 4.5
-const GRAVITY: float = 12.0
-const ACCELERATION: float = 18.0
-const DECELERATION: float = 22.0
+const PLAYER_CONFIG_SCRIPT = preload("res://player_config.gd")
+var movement_config = PLAYER_CONFIG_SCRIPT.new()
 
 var debug_label: Label
 var jump_requested: bool = false
@@ -108,14 +104,14 @@ func _physics_process(delta: float) -> void:
 
 func _apply_gravity(delta: float) -> void:
     if not is_on_floor():
-        velocity.y -= GRAVITY * delta
+        velocity.y -= movement_config.gravity * delta
     elif velocity.y < 0.0:
         velocity.y = 0.0
 
 
 func _handle_jump() -> void:
     if jump_requested and is_on_floor():
-        velocity.y = JUMP_VELOCITY
+        velocity.y = movement_config.jump_velocity
 
     jump_requested = false
 
@@ -133,11 +129,11 @@ func _handle_horizontal_movement(delta: float) -> void:
         transform.basis * Vector3(input_vector.x, 0.0, input_vector.y)
     ).normalized()
 
-    var target_speed := SPRINT_SPEED if sprinting else WALK_SPEED
+    var target_speed: float = movement_config.sprint_speed if sprinting else movement_config.walk_speed
     var acceleration := (
-        ACCELERATION
+        movement_config.acceleration
         if input_vector.length_squared() > 0.0
-        else DECELERATION
+        else movement_config.deceleration
     )
 
     var target_x := move_direction.x * target_speed
