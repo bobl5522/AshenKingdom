@@ -1,10 +1,10 @@
 extends CharacterBody3D
 
 const PLAYER_CAMERA_SCRIPT = preload("res://player_camera.gd")
-const PLAYER_CONFIG_SCRIPT = preload("res://player_config.gd")
+
 const PLAYER_DEBUG_UI_SCRIPT = preload("res://player_debug_ui.gd")
 
-var movement_config = PLAYER_CONFIG_SCRIPT.new()
+@export var movement_config: PlayerConfig = preload("res://player_config.tres")
 var debug_ui: CanvasLayer
 var jump_requested: bool = false
 
