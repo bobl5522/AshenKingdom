@@ -1,12 +1,11 @@
 extends CharacterBody3D
 
 const PLAYER_CAMERA_SCRIPT = preload("res://player_camera.gd")
-
-# Movement tuning
 const PLAYER_CONFIG_SCRIPT = preload("res://player_config.gd")
-var movement_config = PLAYER_CONFIG_SCRIPT.new()
+const PLAYER_DEBUG_UI_SCRIPT = preload("res://player_debug_ui.gd")
 
-var debug_label: Label
+var movement_config = PLAYER_CONFIG_SCRIPT.new()
+var debug_ui: CanvasLayer
 var jump_requested: bool = false
 
 
@@ -71,16 +70,9 @@ func _create_camera_controller() -> void:
 
 
 func _create_debug_ui() -> void:
-    var ui := CanvasLayer.new()
-    ui.name = "DebugLayer"
-    add_child(ui)
-
-    debug_label = Label.new()
-    debug_label.name = "DebugLabel"
-    debug_label.position = Vector2(16.0, 16.0)
-    debug_label.add_theme_font_size_override("font_size", 16)
-    debug_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.55))
-    ui.add_child(debug_label)
+    debug_ui = CanvasLayer.new()
+    debug_ui.set_script(PLAYER_DEBUG_UI_SCRIPT)
+    add_child(debug_ui)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -99,7 +91,9 @@ func _physics_process(delta: float) -> void:
     _handle_jump()
     _handle_horizontal_movement(delta)
     move_and_slide()
-    _update_debug_ui()
+
+    if is_instance_valid(debug_ui):
+        debug_ui.update_debug(self)
 
 
 func _apply_gravity(delta: float) -> void:
@@ -129,8 +123,12 @@ func _handle_horizontal_movement(delta: float) -> void:
         transform.basis * Vector3(input_vector.x, 0.0, input_vector.y)
     ).normalized()
 
-    var target_speed: float = movement_config.sprint_speed if sprinting else movement_config.walk_speed
-    var acceleration := (
+    var target_speed: float = (
+        movement_config.sprint_speed
+        if sprinting
+        else movement_config.walk_speed
+    )
+    var acceleration_rate: float = (
         movement_config.acceleration
         if input_vector.length_squared() > 0.0
         else movement_config.deceleration
@@ -139,31 +137,5 @@ func _handle_horizontal_movement(delta: float) -> void:
     var target_x := move_direction.x * target_speed
     var target_z := move_direction.z * target_speed
 
-    velocity.x = move_toward(velocity.x, target_x, acceleration * delta)
-    velocity.z = move_toward(velocity.z, target_z, acceleration * delta)
-
-
-func _update_debug_ui() -> void:
-    if not is_instance_valid(debug_label):
-        return
-
-    var horizontal_speed := Vector2(velocity.x, velocity.z).length()
-    var mouse_state := (
-        "Captured"
-        if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
-        else "Visible"
-    )
-
-    debug_label.text = (
-        "ASHEN KINGDOM | CONTROLLER DEBUG\n"
-        + "WASD / Arrows: Move | Shift: Sprint | Space: Jump\n"
-        + "Esc: Toggle Mouse Capture\n"
-        + "Horizontal speed: %.2f\n" % horizontal_speed
-        + "Grounded: %s\n" % str(is_on_floor())
-        + "Mouse: %s\n" % mouse_state
-        + "Position: %.2f, %.2f, %.2f" % [
-            global_position.x,
-            global_position.y,
-            global_position.z
-        ]
-    )
+    velocity.x = move_toward(velocity.x, target_x, acceleration_rate * delta)
+    velocity.z = move_toward(velocity.z, target_z, acceleration_rate * delta)
