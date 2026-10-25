@@ -1,0 +1,1110 @@
+ASHEN KINGDOM — DEVELOPMENT REVIEW
+Дата: 2026-10-25 20:42:47
+Путь: C:\AshenKingdom
+
+
+========================================================================
+FILE: ARCHITECTURE.md
+========================================================================
+# AshenKingdom вЂ” РђСЂС…РёС‚РµРєС‚СѓСЂРЅР°СЏ РєР°СЂС‚Р°
+
+## Р¦РµР»СЊ
+
+РћРґРёРЅРѕС‡РЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР° СЃСЋР¶РµС‚РЅРѕР№ RPG РІ Р¶Р°РЅСЂРµ С‚С‘РјРЅРѕРіРѕ С„СЌРЅС‚РµР·Рё.
+РўРµРєСѓС‰РёР№ РїСЂРѕС‚РѕС‚РёРї: Godot 4.x, 3D, С‚РµСЃС‚РѕРІР°СЏ Р»РѕРєР°С†РёСЏ Village.
+
+## РўРµРєСѓС‰Р°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РїСЂРѕРµРєС‚Р°
+
+- `project.godot` вЂ” РЅР°СЃС‚СЂРѕР№РєРё РїСЂРѕРµРєС‚Р°, РІРІРѕРґ Рё РѕСЃРЅРѕРІРЅР°СЏ СЃС†РµРЅР°.
+- `village.tscn` вЂ” С‚РµСЃС‚РѕРІР°СЏ РёРіСЂРѕРІР°СЏ Р»РѕРєР°С†РёСЏ.
+- `player.tscn` вЂ” СЃС†РµРЅР° РїРµСЂСЃРѕРЅР°Р¶Р°.
+- `player.gd` вЂ” РєРѕРЅС‚СЂРѕР»Р»РµСЂ РїРµСЂСЃРѕРЅР°Р¶Р°, С„РёР·РёРєР°, РґРІРёР¶РµРЅРёРµ Рё РїСЂС‹Р¶РѕРє.
+- `player_config.gd` вЂ” С‚РёРї СЂРµСЃСѓСЂСЃР° РЅР°СЃС‚СЂРѕРµРє РґРІРёР¶РµРЅРёСЏ (`PlayerConfig`).
+- `player_config.tres` вЂ” Р·РЅР°С‡РµРЅРёСЏ РЅР°СЃС‚СЂРѕРµРє РґРІРёР¶РµРЅРёСЏ.
+- `player_camera.gd` вЂ” РєР°РјРµСЂР° РѕС‚ С‚СЂРµС‚СЊРµРіРѕ Р»РёС†Р° Рё СѓРїСЂР°РІР»РµРЅРёРµ РјС‹С€СЊСЋ.
+- `player_debug_ui.gd` вЂ” РѕС‚Р»Р°РґРѕС‡РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РїРµСЂСЃРѕРЅР°Р¶Р°.
+- `backups/` вЂ” СЂРµР·РµСЂРІРЅС‹Рµ РєРѕРїРёРё РїРµСЂРµРґ РїР°РєРµС‚РЅС‹РјРё РёР·РјРµРЅРµРЅРёСЏРјРё.
+
+## РўРµРєСѓС‰РёРµ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё
+
+`village.tscn`
+  -> `player.tscn`
+      -> `player.gd`
+          -> `player_config.tres`
+              -> `player_config.gd`
+          -> `player_camera.gd`
+          -> `player_debug_ui.gd`
+
+## Р¦РµР»РµРІР°СЏ Р°СЂС…РёС‚РµРєС‚СѓСЂР°
+
+РџРѕ РјРµСЂРµ СЂРѕСЃС‚Р° РїСЂРѕРµРєС‚Р° РёРіСЂРѕРІС‹Рµ СЃРёСЃС‚РµРјС‹ Р±СѓРґСѓС‚ РІС‹РґРµР»СЏС‚СЊСЃСЏ РІ РѕС‚РґРµР»СЊРЅС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹ Рё СЃРєСЂРёРїС‚С‹. РќРѕРІС‹Рµ С„Р°Р№Р»С‹ РґРѕР±Р°РІР»СЏСЋС‚СЃСЏ РїРѕСЃС‚РµРїРµРЅРЅРѕ, РїРѕСЃР»Рµ РїСЂРѕРІРµСЂРєРё СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїСЂРѕС‚РѕС‚РёРїР°.
+
+- `core/` вЂ” РѕР±С‰РёРµ РёРіСЂРѕРІС‹Рµ СЃРµСЂРІРёСЃС‹ Рё Р±Р°Р·РѕРІС‹Рµ С‚РёРїС‹.
+- `player/` вЂ” СѓРїСЂР°РІР»РµРЅРёРµ, СЃРѕСЃС‚РѕСЏРЅРёРµ Рё С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё РёРіСЂРѕРєР°.
+- `interaction/` вЂ” РїРѕРёСЃРє РёРЅС‚РµСЂР°РєС‚РёРІРЅС‹С… РѕР±СЉРµРєС‚РѕРІ Рё Р·Р°РїСѓСЃРє РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёР№.
+- `items/` вЂ” РѕРїРёСЃР°РЅРёСЏ РїСЂРµРґРјРµС‚РѕРІ, РїРѕРґР±РѕСЂ Рё РёРЅРІРµРЅС‚Р°СЂСЊ.
+- `dialogue/` вЂ” РґРёР°Р»РѕРіРё Рё СЂРµРїР»РёРєРё NPC.
+- `quests/` вЂ” Р·Р°РґР°РЅРёСЏ, СЌС‚Р°РїС‹ Рё СѓСЃР»РѕРІРёСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ.
+- `ui/` вЂ” РёРЅС‚РµСЂС„РµР№СЃ РёРіСЂРѕРєР°.
+- `world/` вЂ” Р»РѕРєР°С†РёРё Рё РёРіСЂРѕРІС‹Рµ РѕР±СЉРµРєС‚С‹.
+- `tests/` вЂ” Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёРµ РїСЂРѕРІРµСЂРєРё, РµСЃР»Рё РёС… РїРѕРґРґРµСЂР¶РєР° Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅР°.
+
+Р­С‚Рѕ С†РµР»РµРІР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР°, Р° РЅРµ СѓС‚РІРµСЂР¶РґРµРЅРёРµ, С‡С‚Рѕ РїРµСЂРµС‡РёСЃР»РµРЅРЅС‹Рµ СЃРёСЃС‚РµРјС‹ СѓР¶Рµ СЂРµР°Р»РёР·РѕРІР°РЅС‹. РќРµ РїРµСЂРµРЅРѕСЃРёС‚СЊ С‚РµРєСѓС‰РёРµ С„Р°Р№Р»С‹ РјР°СЃСЃРѕРІРѕ Р±РµР· РѕС‚РґРµР»СЊРЅРѕРіРѕ РїСЂРѕРІРµСЂСЏРµРјРѕРіРѕ РїР°РєРµС‚Р° РјРёРіСЂР°С†РёРё.
+
+## РџСЂРёРЅС†РёРїС‹ СЂР°Р·СЂР°Р±РѕС‚РєРё
+
+1. Р’РЅРѕСЃРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ РЅРµР±РѕР»СЊС€РёРјРё РїСЂРѕРІРµСЂСЏРµРјС‹РјРё РїР°РєРµС‚Р°РјРё.
+2. РќРµ СѓРґР°Р»СЏС‚СЊ СЂРµР·РµСЂРІРЅС‹Рµ РєРѕРїРёРё Р±РµР· РѕС‚РґРµР»СЊРЅРѕР№ РїСЂРѕРІРµСЂРєРё.
+3. РҐСЂР°РЅРёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё РІ СЂРµСЃСѓСЂСЃР°С…, РєРѕРіРґР° СЌС‚Рѕ РѕРїСЂР°РІРґР°РЅРѕ.
+4. РџСЂРѕРІРµСЂСЏС‚СЊ Р·Р°РіСЂСѓР·РєСѓ Рё Р·Р°РїСѓСЃРє РїСЂРѕРµРєС‚Р° РґРѕ С„РёРєСЃР°С†РёРё РёР·РјРµРЅРµРЅРёР№.
+5. РЎРѕР·РґР°РІР°С‚СЊ СЃС†РµРЅС‹ Рё РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„Р°Р№Р»С‹ СЃРєСЂРёРїС‚Р°РјРё, РїРѕ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё Р±РµР· СЂСѓС‡РЅРѕР№ СЃР±РѕСЂРєРё РІ СЂРµРґР°РєС‚РѕСЂРµ.
+6. РќРµ СЃРјРµС€РёРІР°С‚СЊ РёРіСЂРѕРІСѓСЋ Р»РѕРіРёРєСѓ, РёРЅС‚РµСЂС„РµР№СЃ Рё СѓРїСЂР°РІР»РµРЅРёРµ РєР°РјРµСЂРѕР№ Р±РµР· РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё.
+7. РќРµ СЃС‡РёС‚Р°С‚СЊ РЅРѕРІСѓСЋ СЃРёСЃС‚РµРјСѓ РіРѕС‚РѕРІРѕР№, РїРѕРєР° РѕРЅР° РЅРµ РїСЂРѕРІРµСЂРµРЅР°.
+8. РЎРѕС…СЂР°РЅСЏС‚СЊ СЂР°Р±РѕС‡РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ Р»РѕРєР°Р»СЊРЅРѕ Рё РїСѓР±Р»РёРєРѕРІР°С‚СЊ РїРѕРґС‚РІРµСЂР¶РґС‘РЅРЅС‹Рµ РєРѕРјРјРёС‚С‹ РІ GitHub.
+
+## РўРµРєСѓС‰РёР№ СЌС‚Р°Рї
+
+РџСЂРѕРІРµСЂРєР° РєРѕРЅС‚СЂРѕР»Р»РµСЂР° РїРµСЂСЃРѕРЅР°Р¶Р° Рё РїРѕРґРіРѕС‚РѕРІРєР° Р°СЂС…РёС‚РµРєС‚СѓСЂС‹.
+РЎР»РµРґСѓСЋС‰РёР№ СЌС‚Р°Рї РїРѕСЃР»Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ Р·Р°РїСѓСЃРєР° вЂ” СЃРёСЃС‚РµРјР° РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ СЃ РёРіСЂРѕРІС‹РјРё РѕР±СЉРµРєС‚Р°РјРё.
+
+## РљРѕРјРїРѕРЅРµРЅС‚ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ
+
+- `interaction_controller.gd` вЂ” РїРѕРёСЃРє С†РµР»Рё Р»СѓС‡РѕРј РёР· С†РµРЅС‚СЂР° Р°РєС‚РёРІРЅРѕР№ РєР°РјРµСЂС‹, РїРѕРґСЃРєР°Р·РєР° Рё РѕР±СЂР°Р±РѕС‚РєР° РєР»Р°РІРёС€Рё E.
+- `interactable_object.gd` вЂ” С‚РµСЃС‚РѕРІС‹Р№ РѕР±СЉРµРєС‚ СЃ РєРѕРЅС‚СЂР°РєС‚РѕРј `get_interaction_prompt()` Рё `interact(actor)`.
+- `player.gd` вЂ” СЃРѕР·РґР°С‘С‚ РєРѕРЅС‚СЂРѕР»Р»РµСЂ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ Рё С‚РµСЃС‚РѕРІС‹Р№ РѕР±СЉРµРєС‚ РІРѕ РІСЂРµРјСЏ Р·Р°РїСѓСЃРєР°.
+
+РџРѕРєР° СЌС‚Рѕ РїСЂРѕС‚РѕС‚РёРї. РџРѕР·Р¶Рµ С‚РµСЃС‚РѕРІС‹Р№ РѕР±СЉРµРєС‚ Р±СѓРґРµС‚ Р·Р°РјРµРЅС‘РЅ NPC, РїСЂРµРґРјРµС‚Р°РјРё Рё РґСЂСѓРіРёРјРё РѕР±СЉРµРєС‚Р°РјРё РјРёСЂР°, РёСЃРїРѕР»СЊР·СѓСЋС‰РёРјРё С‚РѕС‚ Р¶Рµ РєРѕРЅС‚СЂР°РєС‚.
+## РЎРёСЃС‚РµРјР° С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє РёРіСЂРѕРєР°
+
+- `player.gd` вЂ” СѓРїСЂР°РІР»РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶РµРј Рё РїРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРјРїРѕРЅРµРЅС‚РѕРІ.
+- `player_stats.gd` вЂ” Р·РґРѕСЂРѕРІСЊРµ, РІС‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ, СѓСЂРѕРЅ, Р»РµС‡РµРЅРёРµ, СЃРјРµСЂС‚СЊ Рё РІРѕР·СЂРѕР¶РґРµРЅРёРµ.
+- `PlayerStatsHUD` вЂ” РёРЅС‚РµСЂС„РµР№СЃ Р·РґРѕСЂРѕРІСЊСЏ Рё РІС‹РЅРѕСЃР»РёРІРѕСЃС‚Рё, СЃРѕР·РґР°РІР°РµРјС‹Р№ РєРѕРґРѕРј.
+- Р‘РµРі СЂР°СЃС…РѕРґСѓРµС‚ РІС‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ; РІ РїРѕРєРѕРµ РѕРЅР° РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ.
+- РџСЂРё СЃРјРµСЂС‚Рё РґРІРёР¶РµРЅРёРµ Р±Р»РѕРєРёСЂСѓРµС‚СЃСЏ. РљР»Р°РІРёС€Р° R РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РґРѕСЂРѕРІСЊРµ Рё РІС‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ.
+- Р‘СѓРґСѓС‰РёРµ Р±РѕРµРІС‹Рµ СЃРёСЃС‚РµРјС‹ РґРѕР»Р¶РЅС‹ РЅР°РЅРѕСЃРёС‚СЊ СѓСЂРѕРЅ С‡РµСЂРµР· `apply_damage(amount)`.
+## Р‘РѕРµРІР°СЏ СЃРёСЃС‚РµРјР° вЂ” РїРµСЂРІС‹Р№ СЌС‚Р°Рї
+
+- `player.gd` СЃРѕР·РґР°С‘С‚ Р±РѕРµРІРѕР№ РєРѕРЅС‚СЂРѕР»Р»РµСЂ Рё С‚РµСЃС‚РѕРІСѓСЋ РјРёС€РµРЅСЊ.
+- `combat_controller.gd` РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ Р»С‘РіРєСѓСЋ/С‚СЏР¶С‘Р»СѓСЋ Р°С‚Р°РєРё, СЂР°СЃС…РѕРґ РІС‹РЅРѕСЃР»РёРІРѕСЃС‚Рё Рё Р±Р»РѕРє.
+- `combat_test_target.gd` СЃРѕРґРµСЂР¶РёС‚ С‚РµСЃС‚РѕРІСѓСЋ С†РµР»СЊ, РєРѕР»Р»РёР·РёСЋ Рё Р·РґРѕСЂРѕРІСЊРµ.
+- Р¦РµР»Рё РґР»СЏ Р±Р»РёР¶РЅРµРіРѕ Р±РѕСЏ РІС…РѕРґСЏС‚ РІ РіСЂСѓРїРїСѓ `enemies` Рё РїСЂРµРґРѕСЃС‚Р°РІР»СЏСЋС‚ `apply_damage(amount)`.
+- Р’С…РѕРґСЏС‰РёР№ СѓСЂРѕРЅ РѕС‚ РїСЂРѕС‚РёРІРЅРёРєРѕРІ Рё РїРѕР»РЅРѕС†РµРЅРЅС‹Р№ AI РїРѕРєР° РЅРµ РїРѕРґРєР»СЋС‡РµРЅС‹.
+
+========================================================================
+FILE: ROADMAP.md
+========================================================================
+# AshenKingdom вЂ” Р”РѕСЂРѕР¶РЅР°СЏ РєР°СЂС‚Р°
+
+РЎС‚Р°С‚СѓСЃС‹: `[x]` РІС‹РїРѕР»РЅРµРЅРѕ РїРѕ С‚РµРєСѓС‰РёРј С„Р°Р№Р»Р°Рј; `[ ]` РµС‰С‘ С‚СЂРµР±СѓРµС‚ СЂРµР°Р»РёР·Р°С†РёРё Рё РїСЂРѕРІРµСЂРєРё.
+
+## Р­С‚Р°Рї 1. РћСЃРЅРѕРІР° РїСЂРѕРµРєС‚Р°
+
+- [x] РџСЂРѕРµРєС‚ Godot Рё РѕСЃРЅРѕРІРЅР°СЏ СЃС†РµРЅР° `village.tscn`.
+- [x] РЎС†РµРЅР° РїРµСЂСЃРѕРЅР°Р¶Р° `player.tscn`.
+- [x] РЈРїСЂР°РІР»РµРЅРёРµ РІС‹РЅРµСЃРµРЅРѕ РІ РѕС‚РґРµР»СЊРЅС‹Р№ СЃРєСЂРёРїС‚.
+- [x] РќР°СЃС‚СЂРѕР№РєРё РґРІРёР¶РµРЅРёСЏ РІС‹РЅРµСЃРµРЅС‹ РІ СЂРµСЃСѓСЂСЃ `PlayerConfig`.
+- [x] РћС‚РґРµР»СЊРЅС‹Р№ СЃРєСЂРёРїС‚ РєР°РјРµСЂС‹.
+- [x] РћС‚Р»Р°РґРѕС‡РЅС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ.
+- [ ] РџРѕРґС‚РІРµСЂРґРёС‚СЊ С‡РёСЃС‚С‹Р№ Р·Р°РїСѓСЃРє РїРѕСЃР»Рµ С‚РµРєСѓС‰РµРіРѕ РїР°РєРµС‚Р°.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ СЂРµР·РµСЂРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ Рё СѓРґР°Р»С‘РЅРЅС‹Р№ GitHub.
+
+## Р­С‚Р°Рї 2. РљРѕРЅС‚СЂРѕР»Р»РµСЂ РїРµСЂСЃРѕРЅР°Р¶Р°
+
+- [x] РҐРѕРґСЊР±Р° Рё СЃРїСЂРёРЅС‚.
+- [x] РЈСЃРєРѕСЂРµРЅРёРµ Рё Р·Р°РјРµРґР»РµРЅРёРµ.
+- [x] Р‘СѓС„РµСЂ РїСЂС‹Р¶РєР°.
+- [x] РћРєРЅРѕ РїСЂС‹Р¶РєР° РїРѕСЃР»Рµ СЃС…РѕРґР° СЃ РєСЂР°СЏ (coyote time).
+- [x] РР·РјРµРЅРµРЅРёРµ РІС‹СЃРѕС‚С‹ РїСЂС‹Р¶РєР° РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РєРЅРѕРїРєРё.
+- [x] РЈРїСЂР°РІР»РµРЅРёРµ РІ РІРѕР·РґСѓС…Рµ СЃ РѕС‚РґРµР»СЊРЅС‹Рј РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРј.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ РѕС‰СѓС‰РµРЅРёСЏ РѕС‚ СѓРїСЂР°РІР»РµРЅРёСЏ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РІ РёРіСЂРµ.
+- [ ] Р”РѕР±Р°РІРёС‚СЊ Р°РЅРёРјР°С†РёРѕРЅРЅС‹Рµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРѕСЃР»Рµ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РјРѕРґРµР»Рё РїРµСЂСЃРѕРЅР°Р¶Р°.
+
+## Р­С‚Р°Рї 3. РћСЃРЅРѕРІРЅС‹Рµ RPG-СЃРёСЃС‚РµРјС‹
+
+- [ ] РЎРёСЃС‚РµРјР° РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ.
+- [ ] РЎРёСЃС‚РµРјР° С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє Рё Р·РґРѕСЂРѕРІСЊСЏ.
+- [ ] РРЅРІРµРЅС‚Р°СЂСЊ Рё РїСЂРµРґРјРµС‚С‹.
+- [ ] Р”РёР°Р»РѕРіРё Рё NPC.
+- [ ] Р–СѓСЂРЅР°Р» Р·Р°РґР°РЅРёР№ Рё СЃРёСЃС‚РµРјР° РєРІРµСЃС‚РѕРІ.
+- [ ] РЎРѕС…СЂР°РЅРµРЅРёРµ Рё Р·Р°РіСЂСѓР·РєР° РёРіСЂС‹.
+
+## Р­С‚Р°Рї 4. Р’РµСЂС‚РёРєР°Р»СЊРЅС‹Р№ СЃСЂРµР·
+
+- [ ] РРіСЂРѕРІР°СЏ Р»РѕРєР°С†РёСЏ СЃ РѕРєСЂСѓР¶РµРЅРёРµРј.
+- [ ] РћРґРёРЅ NPC Рё Р·Р°РєРѕРЅС‡РµРЅРЅС‹Р№ РґРёР°Р»РѕРі.
+- [ ] РћРґРёРЅ РїСЂРѕС‚РёРІРЅРёРє Рё Р±Р°Р·РѕРІС‹Р№ Р±РѕР№.
+- [ ] РћРґРёРЅ РєРІРµСЃС‚ РѕС‚ РїСЂРёРЅСЏС‚РёСЏ РґРѕ Р·Р°РІРµСЂС€РµРЅРёСЏ.
+- [ ] РџСЂРѕРІРµСЂРµРЅРЅС‹Р№ С†РёРєР» РёРіСЂС‹ РѕС‚ Р·Р°РїСѓСЃРєР° РґРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ.
+
+## Р­С‚Р°Рї 5. Р Р°СЃС€РёСЂРµРЅРёРµ
+
+- [ ] РћСЃРЅРѕРІРЅР°СЏ СЃСЋР¶РµС‚РЅР°СЏ Р»РёРЅРёСЏ Рё РїРѕР±РѕС‡РЅС‹Рµ Р·Р°РґР°РЅРёСЏ.
+- [ ] РќРµСЃРєРѕР»СЊРєРѕ Р»РѕРєР°С†РёР№ Рё С‚РёРїРѕРІ РїСЂРѕС‚РёРІРЅРёРєРѕРІ.
+- [ ] Р—РІСѓРє, РјСѓР·С‹РєР°, РІРёР·СѓР°Р»СЊРЅС‹Рµ СЌС„С„РµРєС‚С‹ Рё Р°РЅРёРјР°С†РёРё.
+- [ ] РћРїС‚РёРјРёР·Р°С†РёСЏ РїРѕРґ С†РµР»РµРІРѕРµ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ.
+- [ ] РћС‚РґРµР»СЊРЅРѕРµ РёСЃСЃР»РµРґРѕРІР°РЅРёРµ РїРѕСЂС‚РёСЂРѕРІР°РЅРёСЏ РЅР° РєРѕРЅСЃРѕР»Рё.
+
+## РџСЂР°РІРёР»Рѕ Р·Р°РІРµСЂС€РµРЅРёСЏ СЌС‚Р°РїР°
+
+Р­С‚Р°Рї СЃС‡РёС‚Р°РµС‚СЃСЏ Р·Р°РІРµСЂС€С‘РЅРЅС‹Рј РїРѕСЃР»Рµ РїСЂРѕРІРµСЂРєРё РІ Godot, РѕС‚СЃСѓС‚СЃС‚РІРёСЏ РЅРѕРІС‹С… РѕС€РёР±РѕРє Р·Р°РіСЂСѓР·РєРё Рё СЃРєСЂРёРїС‚РѕРІ Рё С„РёРєСЃР°С†РёРё СЂРµР·СѓР»СЊС‚Р°С‚Р° РІ Git.
+
+## РЎР»РµРґСѓСЋС‰РёР№ РїР°РєРµС‚: РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ РѕР±СЉРµРєС‚Р°РјРё
+
+- [x] РЎРѕР·РґР°С‚СЊ РѕС‚РґРµР»СЊРЅС‹Р№ РєРѕРјРїРѕРЅРµРЅС‚ РїРѕРёСЃРєР° РёРЅС‚РµСЂР°РєС‚РёРІРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°.
+- [x] Р”РѕР±Р°РІРёС‚СЊ РїРѕРґСЃРєР°Р·РєСѓ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ Рё РєР»Р°РІРёС€Сѓ E.
+- [x] Р”РѕР±Р°РІРёС‚СЊ С‚РµСЃС‚РѕРІС‹Р№ РѕР±СЉРµРєС‚, СЃРѕР·РґР°РІР°РµРјС‹Р№ СЃРєСЂРёРїС‚РѕРј.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ Р·Р°РїСѓСЃРє, Р»СѓС‡ РєР°РјРµСЂС‹ Рё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ РІ Godot.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ РѕС‚СЃСѓС‚СЃС‚РІРёРµ РѕС€РёР±РѕРє РІ Debugger.
+- [ ] Р—Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊ РїСЂРѕРІРµСЂРµРЅРЅС‹Р№ РїР°РєРµС‚ РІ Git.
+## РЎРёСЃС‚РµРјР° С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє РёРіСЂРѕРєР°
+
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ Р·РґРѕСЂРѕРІСЊРµ Рё РІС‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ РІ РёРіСЂРѕРІРѕРј Р·Р°РїСѓСЃРєРµ.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ СЂР°СЃС…РѕРґ РІС‹РЅРѕСЃР»РёРІРѕСЃС‚Рё РїСЂРё Р±РµРіРµ Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РІ РїРѕРєРѕРµ.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ Р±Р»РѕРєРёСЂРѕРІРєСѓ РґРІРёР¶РµРЅРёСЏ РїРѕСЃР»Рµ СЃРјРµСЂС‚Рё Рё РІРѕР·СЂРѕР¶РґРµРЅРёРµ РєР»Р°РІРёС€РµР№ R.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ РѕС‚СЃСѓС‚СЃС‚РІРёРµ РѕС€РёР±РѕРє РІ Godot Debugger.
+- [ ] РџРѕСЃР»Рµ СѓСЃРїРµС€РЅРѕР№ РїСЂРѕРІРµСЂРєРё Р·Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊ РїР°РєРµС‚ РІ Git.
+## Р‘РѕРµРІР°СЏ СЃРёСЃС‚РµРјР°: Р±Р°Р·РѕРІС‹Р№ СЌС‚Р°Рї
+
+- [x] РљРѕРЅС‚СЂРѕР»Р»РµСЂ Р±Р»РёР¶РЅРµРіРѕ Р±РѕСЏ РїРѕРґРєР»СЋС‡С‘РЅ Рє РїРµСЂСЃРѕРЅР°Р¶Сѓ.
+- [x] Р‘С‹СЃС‚СЂР°СЏ Рё С‚СЏР¶С‘Р»Р°СЏ Р°С‚Р°РєРё.
+- [x] Р Р°СЃС…РѕРґ РІС‹РЅРѕСЃР»РёРІРѕСЃС‚Рё РїСЂРё Р°С‚Р°РєР°С….
+- [x] Р‘Р»РѕРє РїРѕРґРіРѕС‚РѕРІР»РµРЅ РґР»СЏ РёРЅС‚РµРіСЂР°С†РёРё СЃ РІС…РѕРґСЏС‰РёРј СѓСЂРѕРЅРѕРј.
+- [x] РўРµСЃС‚РѕРІР°СЏ РјРёС€РµРЅСЊ СЃ HP Рё РїРѕР»СѓС‡РµРЅРёРµРј СѓСЂРѕРЅР°.
+- [ ] РџСЂРѕРІРµСЂРёС‚СЊ Р°С‚Р°РєРё РІ Р·Р°РїСѓС‰РµРЅРЅРѕР№ РёРіСЂРµ.
+- [ ] Р”РѕР±Р°РІРёС‚СЊ Р°РЅРёРјР°С†РёРё СѓРґР°СЂРѕРІ Рё СЂРµР°РєС†РёСЋ РЅР° РїРѕРїР°РґР°РЅРёСЏ.
+- [ ] Р”РѕР±Р°РІРёС‚СЊ РїСЂРѕС‚РёРІРЅРёРєРѕРІ СЃ AI Рё РїРѕР»РЅРѕС†РµРЅРЅС‹Р№ СЂР°СЃС‡С‘С‚ РІС…РѕРґСЏС‰РµРіРѕ СѓСЂРѕРЅР°.
+- [ ] Р”РѕР±Р°РІРёС‚СЊ РѕСЂСѓР¶РёРµ, СЌРєРёРїРёСЂРѕРІРєСѓ Рё Р±РѕРµРІС‹Рµ СЌС„С„РµРєС‚С‹.
+
+========================================================================
+FILE: combat_controller.gd
+========================================================================
+extends Node
+
+## Р‘Р°Р·РѕРІР°СЏ СЃРёСЃС‚РµРјР° Р±Р»РёР¶РЅРµРіРѕ Р±РѕСЏ.
+## Р›РљРњ вЂ” Р±С‹СЃС‚СЂР°СЏ Р°С‚Р°РєР°, РџРљРњ вЂ” С‚СЏР¶С‘Р»Р°СЏ Р°С‚Р°РєР°, Q вЂ” Р±Р»РѕРє.
+
+@export var light_damage: float = 12.0
+@export var heavy_damage: float = 28.0
+@export var light_stamina_cost: float = 8.0
+@export var heavy_stamina_cost: float = 20.0
+@export var attack_range: float = 2.6
+@export var attack_radius: float = 1.0
+@export var attack_cooldown: float = 0.38
+
+var _player: CharacterBody3D
+var _stats: Node
+var _cooldown_remaining: float = 0.0
+var _blocking: bool = false
+
+
+func _ready() -> void:
+    _player = get_parent() as CharacterBody3D
+
+    if _player == null:
+        push_error("CombatController РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РґРѕС‡РµСЂРЅРёРј СѓР·Р»РѕРј CharacterBody3D.")
+        set_process_unhandled_input(false)
+        set_physics_process(false)
+        return
+
+    _stats = _player.get_node_or_null("PlayerStats")
+
+    if _stats == null:
+        push_warning("CombatController: СѓР·РµР» PlayerStats РїРѕРєР° РЅРµ РЅР°Р№РґРµРЅ.")
+
+
+func _physics_process(delta: float) -> void:
+    _cooldown_remaining = maxf(0.0, _cooldown_remaining - delta)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+    if _player == null:
+        return
+
+    if event is InputEventMouseButton:
+        var mouse_event := event as InputEventMouseButton
+
+        if not mouse_event.pressed:
+            return
+
+        if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+            return
+
+        match mouse_event.button_index:
+            MOUSE_BUTTON_LEFT:
+                _try_attack(false)
+                get_viewport().set_input_as_handled()
+            MOUSE_BUTTON_RIGHT:
+                _try_attack(true)
+                get_viewport().set_input_as_handled()
+
+    elif event is InputEventKey:
+        var key_event := event as InputEventKey
+
+        if key_event.keycode == KEY_Q:
+            _blocking = key_event.pressed and not key_event.echo
+            get_viewport().set_input_as_handled()
+
+
+func _try_attack(is_heavy: bool) -> void:
+    if _cooldown_remaining > 0.0:
+        return
+
+    if _stats != null and _stats.has_method("is_alive"):
+        if not bool(_stats.call("is_alive")):
+            return
+
+    var stamina_cost := heavy_stamina_cost if is_heavy else light_stamina_cost
+
+    if _stats != null and _stats.has_method("try_consume_stamina"):
+        var consumed: bool = bool(
+            _stats.call("try_consume_stamina", stamina_cost)
+        )
+
+        if not consumed:
+            print("[Р‘РћР™] РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РІС‹РЅРѕСЃР»РёРІРѕСЃС‚Рё.")
+            return
+
+    _cooldown_remaining = attack_cooldown
+
+    var damage := heavy_damage if is_heavy else light_damage
+    var attack_name := "С‚СЏР¶С‘Р»Р°СЏ" if is_heavy else "Р±С‹СЃС‚СЂР°СЏ"
+
+    print("[Р‘РћР™] ", attack_name, " Р°С‚Р°РєР°. РЈСЂРѕРЅ: ", damage)
+    _perform_hit(damage)
+
+
+func _perform_hit(damage: float) -> void:
+    var space_state := _player.get_world_3d().direct_space_state
+    var forward := -_player.global_transform.basis.z.normalized()
+    var hit_center := (
+        _player.global_position
+        + Vector3.UP
+        + forward * attack_range * 0.65
+    )
+
+    var sphere := SphereShape3D.new()
+    sphere.radius = attack_radius
+
+    var query := PhysicsShapeQueryParameters3D.new()
+    query.shape = sphere
+    query.transform = Transform3D(Basis.IDENTITY, hit_center)
+    query.collision_mask = 0xFFFFFFFF
+    query.exclude = [_player.get_rid()]
+    query.collide_with_bodies = true
+    query.collide_with_areas = true
+
+    var results := space_state.intersect_shape(query, 32)
+    var damaged_targets: Array[Node] = []
+
+    for result in results:
+        var collider: Object = result.get("collider")
+
+        if not collider is Node:
+            continue
+
+        var target := _find_enemy_root(collider as Node)
+
+        if target == null or damaged_targets.has(target):
+            continue
+
+        if target.has_method("apply_damage"):
+            damaged_targets.append(target)
+            target.call("apply_damage", damage)
+
+
+func _find_enemy_root(node: Node) -> Node:
+    var current: Node = node
+
+    while current != null and current != _player:
+        if current.is_in_group("enemies"):
+            return current
+        current = current.get_parent()
+
+    return null
+
+
+func is_blocking() -> bool:
+    return Input.is_key_pressed(KEY_Q)
+
+func get_incoming_damage_multiplier() -> float:
+    return 0.35 if is_blocking() else 1.0
+
+
+========================================================================
+FILE: enemy_ai.gd
+========================================================================
+extends CharacterBody3D
+## Basic melee enemy for Ashen Kingdom.
+## All visuals and collision are generated in code.
+
+@export var max_health: float = 80.0
+@export var move_speed: float = 2.2
+@export var detection_range: float = 12.0
+@export var attack_range: float = 1.65
+@export var attack_damage: float = 10.0
+@export var attack_cooldown: float = 1.4
+@export var gravity: float = 18.0
+
+var health: float
+var attack_timer: float = 0.0
+var player: Node3D
+var body_mesh: MeshInstance3D
+var health_label: Label3D
+var is_dead: bool = false
+
+
+func _ready() -> void:
+    add_to_group("enemies")
+    add_to_group("enemy_ai")
+    health = max_health
+    _create_collision()
+    _create_visuals()
+    _create_health_label()
+    print("Enemy AI ready: HP ", health, "/", max_health)
+
+
+func _physics_process(delta: float) -> void:
+    if is_dead:
+        return
+
+    attack_timer = maxf(0.0, attack_timer - delta)
+
+    if not is_instance_valid(player):
+        player = _find_player()
+
+    if not is_instance_valid(player):
+        _apply_gravity(delta)
+        velocity.x = move_toward(velocity.x, 0.0, move_speed * 4.0 * delta)
+        velocity.z = move_toward(velocity.z, 0.0, move_speed * 4.0 * delta)
+        move_and_slide()
+        return
+
+    var offset := player.global_position - global_position
+    var flat_offset := Vector3(offset.x, 0.0, offset.z)
+    var distance := flat_offset.length()
+
+    if distance > detection_range:
+        velocity.x = move_toward(velocity.x, 0.0, move_speed * 4.0 * delta)
+        velocity.z = move_toward(velocity.z, 0.0, move_speed * 4.0 * delta)
+        _apply_gravity(delta)
+        move_and_slide()
+        return
+
+    if distance > 0.05:
+        look_at(
+            Vector3(player.global_position.x, global_position.y, player.global_position.z),
+            Vector3.UP
+        )
+
+    if distance > attack_range:
+        var direction := flat_offset.normalized()
+        velocity.x = direction.x * move_speed
+        velocity.z = direction.z * move_speed
+    else:
+        velocity.x = move_toward(velocity.x, 0.0, move_speed * 6.0 * delta)
+        velocity.z = move_toward(velocity.z, 0.0, move_speed * 6.0 * delta)
+        if attack_timer <= 0.0:
+            _attack_player()
+
+    _apply_gravity(delta)
+    move_and_slide()
+
+
+func _find_player() -> Node3D:
+    var candidate := get_tree().get_first_node_in_group("player")
+    if candidate is Node3D and candidate != self:
+        return candidate as Node3D
+    return null
+
+
+func _apply_gravity(delta: float) -> void:
+    if not is_on_floor():
+        velocity.y -= gravity * delta
+    else:
+        velocity.y = 0.0
+
+
+func _attack_player() -> void:
+    attack_timer = attack_cooldown
+
+    if not is_instance_valid(player):
+        return
+
+    var multiplier := 1.0
+    var controller := player.find_child("CombatController", true, false)
+    if controller != null and controller.has_method("get_incoming_damage_multiplier"):
+        multiplier = float(controller.call("get_incoming_damage_multiplier"))
+
+    var final_damage := attack_damage * clampf(multiplier, 0.0, 1.0)
+    var stats := player.find_child("PlayerStats", true, false)
+
+    if stats == null:
+        stats = player.find_child("PlayerStats", false, false)
+
+    if stats != null:
+        if stats.has_method("take_damage"):
+            stats.call("take_damage", final_damage)
+        elif stats.has_method("apply_damage"):
+            stats.call("apply_damage", final_damage)
+        elif stats.has_method("receive_damage"):
+            stats.call("receive_damage", final_damage)
+        else:
+            push_warning("Enemy hit player, but PlayerStats has no supported damage method.")
+    else:
+        push_warning("Enemy hit player, but PlayerStats node was not found.")
+
+    print("Enemy attack: ", final_damage, " damage (block multiplier ", multiplier, ")")
+
+
+func apply_damage(amount: float) -> void:
+    if is_dead or amount <= 0.0:
+        return
+
+    health = maxf(0.0, health - amount)
+    _update_health_label()
+    print("Enemy AI HP: ", health, "/", max_health)
+
+    if health <= 0.0:
+        _die()
+
+
+func _die() -> void:
+    is_dead = true
+    velocity = Vector3.ZERO
+    print("Enemy AI defeated.")
+    queue_free()
+
+
+func _create_collision() -> void:
+    var collision := CollisionShape3D.new()
+    collision.name = "CollisionShape3D"
+
+    var shape := CapsuleShape3D.new()
+    shape.radius = 0.38
+    shape.height = 1.8
+    collision.shape = shape
+    collision.position.y = 0.9
+    add_child(collision)
+
+
+func _create_visuals() -> void:
+    body_mesh = MeshInstance3D.new()
+    body_mesh.name = "EnemyBody"
+
+    var mesh := CapsuleMesh.new()
+    mesh.radius = 0.38
+    mesh.height = 1.8
+    body_mesh.mesh = mesh
+    body_mesh.position.y = 0.9
+
+    var material := StandardMaterial3D.new()
+    material.albedo_color = Color(0.35, 0.12, 0.10)
+    material.roughness = 0.92
+    body_mesh.material_override = material
+    add_child(body_mesh)
+
+
+func _create_health_label() -> void:
+    health_label = Label3D.new()
+    health_label.name = "EnemyHealthLabel"
+    health_label.position = Vector3(0.0, 2.15, 0.0)
+    health_label.font_size = 32
+    health_label.pixel_size = 0.005
+    health_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+    add_child(health_label)
+    _update_health_label()
+
+
+func _update_health_label() -> void:
+    if is_instance_valid(health_label):
+        health_label.text = "Р’СЂР°Рі  %d / %d" % [
+            roundi(health),
+            roundi(max_health)
+        ]
+
+========================================================================
+FILE: player_stats.gd
+========================================================================
+extends Node
+
+signal health_changed(current: float, maximum: float)
+signal stamina_changed(current: float, maximum: float)
+signal died
+signal revived
+
+@export_range(1.0, 1000.0, 1.0) var max_health: float = 100.0
+@export_range(1.0, 1000.0, 1.0) var max_stamina: float = 100.0
+@export_range(1.0, 200.0, 1.0) var stamina_regen_per_second: float = 20.0
+
+var health: float
+var stamina: float
+var dead: bool = false
+var sprinting: bool = false
+
+var health_label: Label
+var stamina_label: Label
+var health_bar: ProgressBar
+var stamina_bar: ProgressBar
+var status_label: Label
+
+
+func _ready() -> void:
+    health = max_health
+    stamina = max_stamina
+    _create_hud()
+    _refresh_hud()
+    health_changed.emit(health, max_health)
+    stamina_changed.emit(stamina, max_stamina)
+
+
+func _process(delta: float) -> void:
+    if dead:
+        return
+
+    if not sprinting and stamina < max_stamina:
+        stamina = minf(
+            max_stamina,
+            stamina + stamina_regen_per_second * delta
+        )
+        stamina_changed.emit(stamina, max_stamina)
+        _refresh_hud()
+
+
+func is_alive() -> bool:
+    return not dead
+
+
+func set_sprinting(value: bool) -> void:
+    sprinting = value and not dead
+
+
+func try_consume_stamina(amount: float) -> bool:
+    if dead or amount <= 0.0:
+        sprinting = false
+        return false
+
+    if stamina < amount:
+        sprinting = false
+        return false
+
+    stamina = maxf(0.0, stamina - amount)
+    sprinting = true
+    stamina_changed.emit(stamina, max_stamina)
+    _refresh_hud()
+    return true
+
+
+func apply_damage(amount: float) -> void:
+    if dead or amount <= 0.0:
+        return
+
+    health = maxf(0.0, health - amount)
+    health_changed.emit(health, max_health)
+    _refresh_hud()
+
+    if health <= 0.0:
+        dead = true
+        sprinting = false
+        status_label.text = "Р’Р« РџРћР“РР‘Р›Р вЂ” РЅР°Р¶РјРёС‚Рµ R РґР»СЏ РІРѕР·СЂРѕР¶РґРµРЅРёСЏ"
+        died.emit()
+
+
+func heal(amount: float) -> void:
+    if dead or amount <= 0.0:
+        return
+
+    health = minf(max_health, health + amount)
+    health_changed.emit(health, max_health)
+    _refresh_hud()
+
+
+func revive() -> void:
+    if not dead:
+        return
+
+    dead = false
+    health = max_health
+    stamina = max_stamina
+    sprinting = false
+
+    health_changed.emit(health, max_health)
+    stamina_changed.emit(stamina, max_stamina)
+    _refresh_hud()
+    revived.emit()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+    if event.is_action_pressed("ui_cancel"):
+        return
+
+    if event is InputEventKey:
+        if event.pressed and not event.echo:
+            if event.keycode == KEY_R and dead:
+                revive()
+
+
+func _create_hud() -> void:
+    var layer := CanvasLayer.new()
+    layer.name = "PlayerStatsHUD"
+    add_child(layer)
+
+    var panel := VBoxContainer.new()
+    panel.name = "StatsPanel"
+    panel.position = Vector2(24.0, 24.0)
+    panel.custom_minimum_size = Vector2(280.0, 0.0)
+    panel.add_theme_constant_override("separation", 6)
+    layer.add_child(panel)
+
+    health_label = Label.new()
+    health_label.name = "HealthLabel"
+    health_label.text = "Р—РґРѕСЂРѕРІСЊРµ"
+    panel.add_child(health_label)
+
+    health_bar = ProgressBar.new()
+    health_bar.name = "HealthBar"
+    health_bar.custom_minimum_size = Vector2(280.0, 18.0)
+    health_bar.show_percentage = false
+    panel.add_child(health_bar)
+
+    stamina_label = Label.new()
+    stamina_label.name = "StaminaLabel"
+    stamina_label.text = "Р’С‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ"
+    panel.add_child(stamina_label)
+
+    stamina_bar = ProgressBar.new()
+    stamina_bar.name = "StaminaBar"
+    stamina_bar.custom_minimum_size = Vector2(280.0, 18.0)
+    stamina_bar.show_percentage = false
+    panel.add_child(stamina_bar)
+
+    status_label = Label.new()
+    status_label.name = "StatusLabel"
+    status_label.text = ""
+    status_label.add_theme_color_override(
+        "font_color",
+        Color(1.0, 0.35, 0.25)
+    )
+    status_label.add_theme_font_size_override("font_size", 18)
+    panel.add_child(status_label)
+
+
+func _refresh_hud() -> void:
+    if not is_instance_valid(health_bar):
+        return
+
+    health_bar.max_value = max_health
+    health_bar.value = health
+    health_label.text = "Р—РґРѕСЂРѕРІСЊРµ: %d / %d" % [
+        roundi(health),
+        roundi(max_health)
+    ]
+
+    stamina_bar.max_value = max_stamina
+    stamina_bar.value = stamina
+    stamina_label.text = "Р’С‹РЅРѕСЃР»РёРІРѕСЃС‚СЊ: %d / %d" % [
+        roundi(stamina),
+        roundi(max_stamina)
+    ]
+
+    if not dead:
+        status_label.text = ""
+
+========================================================================
+FILE: player.gd
+========================================================================
+extends CharacterBody3D
+
+const PLAYER_CAMERA_SCRIPT = preload("res://player_camera.gd")
+const PLAYER_DEBUG_UI_SCRIPT = preload("res://player_debug_ui.gd")
+const PLAYER_INTERACTION_SCRIPT = preload("res://interaction_controller.gd")
+
+@export var movement_config: PlayerConfig = preload("res://player_config.tres")
+
+@export_group("Jump")
+@export_range(0.0, 0.3, 0.01) var jump_buffer_duration: float = 0.12
+@export_range(0.0, 0.3, 0.01) var coyote_time_duration: float = 0.10
+@export_range(0.1, 1.0, 0.05) var jump_release_multiplier: float = 0.45
+
+@export_group("Air Control")
+@export_range(0.0, 1.0, 0.05) var air_control_multiplier: float = 0.45
+
+var debug_ui: CanvasLayer
+var jump_buffer_remaining: float = 0.0
+var coyote_time_remaining: float = 0.0
+
+
+func _ready() -> void:
+    add_to_group("player")
+    name = "Player"
+    _create_collision()
+    _create_visuals()
+    _create_camera_controller()
+    _create_debug_ui()
+    _create_player_stats()
+    _create_interaction_controller()
+    _create_interaction_test_object()
+    _create_combat_controller()
+    _create_combat_test_target()
+    _create_enemy_ai_test_target()
+    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _create_collision() -> void:
+    var collision := CollisionShape3D.new()
+    collision.name = "PlayerCollision"
+
+    var capsule := CapsuleShape3D.new()
+    capsule.radius = 0.4
+    capsule.height = 1.8
+
+    collision.shape = capsule
+    collision.position.y = 0.9
+    add_child(collision)
+
+
+func _create_visuals() -> void:
+    var body := MeshInstance3D.new()
+    body.name = "BodyMesh"
+
+    var body_mesh := CapsuleMesh.new()
+    body_mesh.radius = 0.4
+    body_mesh.height = 1.8
+    body.mesh = body_mesh
+    body.position.y = 0.9
+    body.material_override = _make_material(Color(0.20, 0.22, 0.24))
+    add_child(body)
+
+    var head := MeshInstance3D.new()
+    head.name = "HeadMesh"
+
+    var head_mesh := SphereMesh.new()
+    head_mesh.radius = 0.24
+    head_mesh.height = 0.48
+    head.mesh = head_mesh
+    head.position.y = 1.65
+    head.material_override = _make_material(Color(0.55, 0.42, 0.32))
+    add_child(head)
+
+
+func _make_material(color: Color) -> StandardMaterial3D:
+    var material := StandardMaterial3D.new()
+    material.albedo_color = color
+    material.roughness = 0.85
+    return material
+
+
+func _create_camera_controller() -> void:
+    var camera_controller := Node3D.new()
+    camera_controller.name = "CameraController"
+    camera_controller.set_script(PLAYER_CAMERA_SCRIPT)
+    add_child(camera_controller)
+
+
+func _create_debug_ui() -> void:
+    debug_ui = CanvasLayer.new()
+    debug_ui.set_script(PLAYER_DEBUG_UI_SCRIPT)
+    add_child(debug_ui)
+
+
+func _create_interaction_controller() -> void:
+    var interaction_controller := Node3D.new()
+    interaction_controller.name = "InteractionController"
+    interaction_controller.set_script(PLAYER_INTERACTION_SCRIPT)
+    add_child(interaction_controller)
+
+func _create_interaction_test_object() -> void:
+    var world := get_tree().current_scene
+
+    if world == null:
+        push_warning("Interaction test object: current_scene Р С•РЎвЂљРЎРѓРЎС“РЎвЂљРЎРѓРЎвЂљР Р†РЎС“Р ВµРЎвЂљ.")
+        return
+
+    if world.get_node_or_null("InteractionTestObject") != null:
+        return
+
+    var target := StaticBody3D.new()
+    target.name = "InteractionTestObject"
+    target.set_script(preload("res://interactable_object.gd"))
+    target.collision_layer = 1
+    target.collision_mask = 1
+    target.add_to_group("interactable")
+
+    var collision := CollisionShape3D.new()
+    collision.name = "CollisionShape3D"
+
+    var box_shape := BoxShape3D.new()
+    box_shape.size = Vector3(1.2, 1.8, 0.6)
+    collision.shape = box_shape
+    collision.position.y = 0.9
+    target.add_child(collision)
+
+    var mesh := MeshInstance3D.new()
+    mesh.name = "MeshInstance3D"
+
+    var box_mesh := BoxMesh.new()
+    box_mesh.size = Vector3(1.2, 1.8, 0.6)
+    mesh.mesh = box_mesh
+
+    var material := StandardMaterial3D.new()
+    material.albedo_color = Color(0.45, 0.25, 0.12)
+    material.roughness = 0.75
+    mesh.material_override = material
+    mesh.position.y = 0.9
+    target.add_child(mesh)
+
+    var target_position: Vector3 = (
+        global_position - global_transform.basis.z * 3.0
+    )
+
+    # Р вЂќР С•Р В±Р В°Р Р†Р В»РЎРЏР ВµР С Р С•Р В±РЎР‰Р ВµР С”РЎвЂљ Р С—Р С•РЎРѓР В»Р Вµ Р В·Р В°Р Р†Р ВµРЎР‚РЎв‚¬Р ВµР Р…Р С‘РЎРЏ Р Р…Р В°РЎРѓРЎвЂљРЎР‚Р С•Р в„–Р С”Р С‘ Р Т‘Р ВµРЎР‚Р ВµР Р†Р В° РЎРѓРЎвЂ Р ВµР Р…РЎвЂ№.
+    call_deferred(
+        "_attach_interaction_test_object",
+        world,
+        target,
+        target_position
+    )
+
+
+func _attach_interaction_test_object(
+    world: Node,
+    target: StaticBody3D,
+    target_position: Vector3
+) -> void:
+    if not is_instance_valid(world) or not is_instance_valid(target):
+        return
+
+    if target.is_inside_tree():
+        return
+
+    world.add_child(target)
+    target.global_position = target_position
+func _unhandled_input(event: InputEvent) -> void:
+    if event.is_action_pressed("jump", false):
+        jump_buffer_remaining = jump_buffer_duration
+
+    if event.is_action_released("jump"):
+        if velocity.y > 0.0:
+            velocity.y *= jump_release_multiplier
+
+    if event.is_action_pressed("toggle_mouse_capture", false):
+        if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+            Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+        else:
+            Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _physics_process(delta: float) -> void:
+    _update_jump_timers(delta)
+    _apply_gravity(delta)
+    _handle_jump(delta)
+    _handle_horizontal_movement(delta)
+
+    move_and_slide()
+
+    if is_instance_valid(debug_ui):
+        debug_ui.update_debug(self)
+
+
+func _update_jump_timers(delta: float) -> void:
+    if is_on_floor():
+        coyote_time_remaining = coyote_time_duration
+    else:
+        coyote_time_remaining = maxf(
+            coyote_time_remaining - delta,
+            0.0
+        )
+
+    if jump_buffer_remaining > 0.0:
+        jump_buffer_remaining = maxf(
+            jump_buffer_remaining - delta,
+            0.0
+        )
+
+
+func _apply_gravity(delta: float) -> void:
+    if not is_on_floor():
+        velocity.y -= movement_config.gravity * delta
+    elif velocity.y < 0.0:
+        velocity.y = 0.0
+
+
+func _handle_jump(_delta: float) -> void:
+    if jump_buffer_remaining <= 0.0:
+        return
+
+    var can_jump := is_on_floor() or coyote_time_remaining > 0.0
+    if not can_jump:
+        return
+
+    velocity.y = movement_config.jump_velocity
+    jump_buffer_remaining = 0.0
+    coyote_time_remaining = 0.0
+
+
+func _handle_horizontal_movement(delta: float) -> void:
+    var input_vector := Input.get_vector(
+        "move_left",
+        "move_right",
+        "move_forward",
+        "move_backward"
+    )
+
+    var sprinting := Input.is_action_pressed("sprint")
+    var stats := get_node_or_null("PlayerStats")
+    if stats != null and not stats.is_alive():
+        velocity.x = 0.0
+        velocity.z = 0.0
+        stats.set_sprinting(false)
+        return
+    if sprinting and stats != null:
+        sprinting = stats.try_consume_stamina(22.0 * delta)
+    if stats != null:
+        stats.set_sprinting(sprinting)
+    var move_direction := (
+        transform.basis * Vector3(input_vector.x, 0.0, input_vector.y)
+    ).normalized()
+
+    var target_speed: float = (
+        movement_config.sprint_speed
+        if sprinting
+        else movement_config.walk_speed
+    )
+
+    var has_input := input_vector.length_squared() > 0.0
+    var acceleration_rate: float = (
+        movement_config.acceleration
+        if has_input
+        else movement_config.deceleration
+    )
+
+    if not is_on_floor():
+        acceleration_rate *= air_control_multiplier
+
+    var target_x := move_direction.x * target_speed
+    var target_z := move_direction.z * target_speed
+
+    velocity.x = move_toward(
+        velocity.x,
+        target_x,
+        acceleration_rate * delta
+    )
+    velocity.z = move_toward(
+        velocity.z,
+        target_z,
+        acceleration_rate * delta
+    )
+
+
+func _create_player_stats() -> void:
+    if get_node_or_null("PlayerStats") != null:
+        return
+
+    var stats := Node.new()
+    stats.name = "PlayerStats"
+    stats.set_script(preload("res://player_stats.gd"))
+    add_child(stats)
+
+
+# ------------------------------------------------------------------
+# Combat system bootstrap
+# ------------------------------------------------------------------
+
+func _create_combat_controller() -> void:
+    if get_node_or_null("CombatController") != null:
+        return
+
+    var controller := Node.new()
+    controller.name = "CombatController"
+    controller.set_script(preload("res://combat_controller.gd"))
+    add_child(controller)
+
+
+func _create_combat_test_target() -> void:
+    if get_tree().get_first_node_in_group("combat_test_target") != null:
+        return
+
+    call_deferred("_spawn_combat_test_target")
+
+
+func _spawn_combat_test_target() -> void:
+    if not is_inside_tree():
+        return
+
+    if get_tree().get_first_node_in_group("combat_test_target") != null:
+        return
+
+    var scene_root: Node = get_tree().current_scene
+    if scene_root == null:
+        push_warning("Combat test target: scene root not found.")
+        return
+
+    var target := Node3D.new()
+    target.name = "CombatTestTarget"
+    target.set_script(preload("res://combat_test_target.gd"))
+
+    var forward := -global_transform.basis.z.normalized()
+    var spawn_global := global_position + forward * 2.2
+    target.position = scene_root.to_local(spawn_global)
+
+    scene_root.call_deferred("add_child", target)
+
+
+func _create_enemy_ai_test_target() -> void:
+    if get_tree().get_first_node_in_group("enemy_ai") != null:
+        return
+
+    call_deferred("_spawn_enemy_ai_test_target")
+
+
+func _spawn_enemy_ai_test_target() -> void:
+    if not is_inside_tree():
+        return
+
+    if get_tree().get_first_node_in_group("enemy_ai") != null:
+        return
+
+    var scene_root: Node = get_tree().current_scene
+    if scene_root == null:
+        push_warning("Enemy AI: scene root not found.")
+        return
+
+    var enemy := CharacterBody3D.new()
+    enemy.name = "EnemyAI"
+    enemy.set_script(preload("res://enemy_ai.gd"))
+
+    var forward := -global_transform.basis.z.normalized()
+    var spawn_global := global_position + forward * 5.0
+    enemy.position = scene_root.to_local(spawn_global)
+
+    scene_root.call_deferred("add_child", enemy)
+
+========================================================================
+FILE: player_config.gd
+========================================================================
+extends Resource
+class_name PlayerConfig
+
+## РќР°СЃС‚СЂРѕР№РєРё РґРІРёР¶РµРЅРёСЏ РїРµСЂСЃРѕРЅР°Р¶Р°.
+## РР·РјРµРЅСЏР№С‚Рµ Р·РЅР°С‡РµРЅРёСЏ Р·РґРµСЃСЊ, РЅРµ Р·Р°С‚СЂР°РіРёРІР°СЏ Р»РѕРіРёРєСѓ РєРѕРЅС‚СЂРѕР»Р»РµСЂР°.
+
+@export_group("РЎРєРѕСЂРѕСЃС‚СЊ")
+@export_range(0.1, 20.0, 0.1) var walk_speed: float = 4.0
+@export_range(0.1, 30.0, 0.1) var sprint_speed: float = 7.0
+
+@export_group("РџСЂС‹Р¶РѕРє Рё РіСЂР°РІРёС‚Р°С†РёСЏ")
+@export_range(0.1, 15.0, 0.1) var jump_velocity: float = 4.5
+@export_range(0.1, 40.0, 0.1) var gravity: float = 12.0
+
+@export_group("РЈРїСЂР°РІР»РµРЅРёРµ СЂР°Р·РіРѕРЅРѕРј")
+@export_range(0.1, 60.0, 0.1) var acceleration: float = 18.0
+@export_range(0.1, 60.0, 0.1) var deceleration: float = 22.0
+
+========================================================================
+GIT STATUS — БЕЗ КОММИТА И PUSH
+========================================================================
+## main...origin/main [ahead 7]
+ M combat_controller.gd
+ M player.gd
+?? diagnostic_source_report.txt
+?? enemy_ai.gd
+?? enemy_ai.gd.uid

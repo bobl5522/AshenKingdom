@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 ## Базовая система ближнего боя.
 ## ЛКМ — быстрая атака, ПКМ — тяжёлая атака, Q — блок.
@@ -144,9 +144,8 @@ func _find_enemy_root(node: Node) -> Node:
 
 
 func is_blocking() -> bool:
-    return _blocking
-
+    return Input.is_key_pressed(KEY_Q)
 
 func get_incoming_damage_multiplier() -> float:
-    # Подготовка к подключению вражеских атак на следующем этапе.
-    return 0.35 if _blocking else 1.0
+    return 0.35 if is_blocking() else 1.0
+

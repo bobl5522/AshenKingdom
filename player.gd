@@ -20,6 +20,7 @@ var coyote_time_remaining: float = 0.0
 
 
 func _ready() -> void:
+    add_to_group("player")
     name = "Player"
     _create_collision()
     _create_visuals()
@@ -30,6 +31,7 @@ func _ready() -> void:
     _create_interaction_test_object()
     _create_combat_controller()
     _create_combat_test_target()
+    _create_enemy_ai_test_target()
     Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
@@ -331,3 +333,33 @@ func _spawn_combat_test_target() -> void:
     target.position = scene_root.to_local(spawn_global)
 
     scene_root.call_deferred("add_child", target)
+
+
+func _create_enemy_ai_test_target() -> void:
+    if get_tree().get_first_node_in_group("enemy_ai") != null:
+        return
+
+    call_deferred("_spawn_enemy_ai_test_target")
+
+
+func _spawn_enemy_ai_test_target() -> void:
+    if not is_inside_tree():
+        return
+
+    if get_tree().get_first_node_in_group("enemy_ai") != null:
+        return
+
+    var scene_root: Node = get_tree().current_scene
+    if scene_root == null:
+        push_warning("Enemy AI: scene root not found.")
+        return
+
+    var enemy := CharacterBody3D.new()
+    enemy.name = "EnemyAI"
+    enemy.set_script(preload("res://enemy_ai.gd"))
+
+    var forward := -global_transform.basis.z.normalized()
+    var spawn_global := global_position + forward * 5.0
+    enemy.position = scene_root.to_local(spawn_global)
+
+    scene_root.call_deferred("add_child", enemy)
