@@ -4,3 +4,10 @@
 *.bak
 .DS_Store
 Thumbs.db
+backups/
+logs/
+*.log
+*.swp
+*.backup
+*.failed-backup
+*.pre-jump-buffer
